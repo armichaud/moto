@@ -135,10 +135,10 @@ def dict_to_camel_case(dictionary: Dict[str, Any]) -> Dict[str, Any]:
     result = {}
     for key, value in dictionary.items():
         camel_case = snake_to_camel_case(key)
-        if isinstance(value, dict):
-            value = dict_to_camel_case(value)
-        elif isinstance(value, List[dict]):
+        if isinstance(value, list):
             value = [dict_to_camel_case(item) for item in value]
+        elif not isinstance(value, (str,bool,int,None)):
+            value = dict_to_camel_case(value)
         result[camel_case] = value
     return result
 
@@ -151,9 +151,9 @@ def dataclass_to_camel_case_dict(obj: object) -> dict:
             value
         ):
             camel_case = snake_to_camel_case(attr)
-            if isinstance(value, Dict[str,Any]):
-                value = dict_to_camel_case(value)
-            elif isinstance(value, List[Dict[str,Any]]):
+            if isinstance(value, list):
                 value = [dict_to_camel_case(item) for item in value]
+            elif not isinstance(value, (str,bool,int)):
+                value = dict_to_camel_case(value)
             result[camel_case] = value
     return result
